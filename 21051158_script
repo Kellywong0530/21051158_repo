@@ -1,0 +1,10 @@
+#!/bin/bash
+puppet resource package git ensure=present
+puppet resource package apache2 ensure=present
+puppet resource service apache2 ensure=running
+puppet resource file /courseworkfinal/clone ensure=absent force=true
+puppet resource file /courseworkfinal ensure=directory
+puppet resource file /courseworkfinal/clone ensure=directory
+cd /courseworkfinal/clone
+git clone https://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@github.com/Kellywong0530/21051158_repo.git
+cp -p /courseworkfinal/clone/21051158_repo/index.html /var/www/html
