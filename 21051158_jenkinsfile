@@ -1,0 +1,41 @@
+pipeline {
+      agent any
+      stages {
+          stage('21051158 - Stage One') {
+          steps {
+            echo '21051158 - Start of Pipeline'
+          }
+          }
+          stage('21051158 - Stage Two') {
+          steps {
+            input('Push changes to Production')
+          }
+          }
+          stage('21051158 - Stage Three') {
+          when {
+                not {
+                    branch "Changes not Push to Production"
+                }
+          }
+          steps {
+                 sh '''#!/bin/bash
+                 targets=;
+                 locate_script='/home/21051158/script_dir/21051158_script';
+                 docker cp $locate_script $targets://$locate_script;
+                 bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as root;
+                 '''
+                 echo "Changes is pushed to Production"
+          }
+          }
+          stage('21051158 - Stage Four') {
+          steps {
+            echo 'Production website tested working'
+          }
+          }
+          stage('21051158 - Stage Five') {
+          steps {
+            echo 'Production website is updated successfully'
+          }
+          }
+      }
+}
